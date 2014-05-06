@@ -1,0 +1,78 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@drawable/bg">
+
+        <ImageView
+            android:id="@+id/logo_imageview"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@drawable/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/title_textview"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/title_label_bg"
+            android:text="Es läuft gerade"
+            android:gravity="center"
+            android:textColor="@color/abc_search_url_text_selected"
+            android:layout_below="@id/logo_imageview"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/playing_textview"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/playing_label_bg"
+            android:text="Maher Zain"
+            android:gravity="center"
+            android:layout_below="@id/title_textview"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@color/radiouahid_green"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="10dp">
+
+                <Button
+                    android:id="@+id/play_button"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/play_button"
+                    android:layout_marginRight="50dp"/>
+
+                <Button
+                    android:id="@+id/stop_button"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/stop_button"/>
+
+            </LinearLayout>
+
+            <SeekBar
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/seekBar"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
