@@ -3,18 +3,17 @@ package com.islamtemplate.radiouahid;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.media.AudioManager;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
 
 
 public class RadioUahidActivity extends Activity implements MediaPlayer.OnPreparedListener, MediaPlayer.OnBufferingUpdateListener {
@@ -51,8 +50,8 @@ public class RadioUahidActivity extends Activity implements MediaPlayer.OnPrepar
         radioUahidPlayer.setOnPreparedListener(this);
         radioUahidPlayer.setOnBufferingUpdateListener(this);
         initializePlayer();
+        playPauseButton.setBackground(getResources().getDrawable(R.drawable.pause_button));
         setButtonListeners();
-
 
     }
 
@@ -103,10 +102,13 @@ public class RadioUahidActivity extends Activity implements MediaPlayer.OnPrepar
             public void onClick(View v) {
                 if (radioUahidPlayer.isPlaying()) {
                     radioUahidPlayer.pause();
+                    playPauseButton.setBackground(getResources().getDrawable(R.drawable.play_button));
                 } else if (isStopped){
                     initializePlayer();
+                    playPauseButton.setBackground(getResources().getDrawable(R.drawable.pause_button));
                 } else {
                     radioUahidPlayer.start();
+                    playPauseButton.setBackground(getResources().getDrawable(R.drawable.pause_button));
                 }
             }
         });
@@ -118,6 +120,7 @@ public class RadioUahidActivity extends Activity implements MediaPlayer.OnPrepar
                     radioUahidPlayer.stop();
                     radioUahidPlayer.reset();
                     isStopped = true;
+                    playPauseButton.setBackground(getResources().getDrawable(R.drawable.play_button));
 
                 }
             }
@@ -126,7 +129,7 @@ public class RadioUahidActivity extends Activity implements MediaPlayer.OnPrepar
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-        titleTextView.setText("Es läuft gerade");
+        titleTextView.setText("Du hörst gerade");
         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
@@ -134,10 +137,24 @@ public class RadioUahidActivity extends Activity implements MediaPlayer.OnPrepar
 
     @Override
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
-        MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
-        metaRetriever.setDataSource(RADIO_URL, new HashMap<String, String>());
-        String artist =  metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-        String title = metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
-        playingTextView.setText(artist + " - " + title);
+
     }
+
+    private boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
+
 }
